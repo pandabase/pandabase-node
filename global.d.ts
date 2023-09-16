@@ -147,6 +147,5 @@ declare module "transaction-interfaces" {
       order_status: "pending" | "processing" | "completed" | "cancelled";
     };
     provider: "Stripe" | "PayPal" | "Coinbase";
-    checkout_url: string;
   }
 }
