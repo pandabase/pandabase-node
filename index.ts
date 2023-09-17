@@ -220,14 +220,14 @@ class Pandabase extends Client {
   // @Transaction Methods
 
   // @createCheckout - Creates a checkout session using transaction route
-  private createTransaction(
+  private async createTransaction(
     data: CreateTransactionRequest
   ): Promise<GetCreatedTransactionResponse> {
     const endpoint: string = "/transaction";
     return this.makeRequest("POST", endpoint, data);
   }
 
-  private getTransaction(id: number): Promise<GetTransactionResponse> {
+  private async getTransaction(id: number): Promise<GetTransactionResponse> {
     const endpoint: string = "/transaction/" + id;
     return this.makeRequest("GET", endpoint);
   }
