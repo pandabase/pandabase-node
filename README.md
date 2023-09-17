@@ -2,11 +2,11 @@
 
 The Pandabase Node library provides convenient access to the Pandabase API from applications written in server-side JavaScript.
 
-# Requirements
+## Requirements
 
 - Node / Bun.
 
-# Installation
+## Installation
 
 Install the package with:
 
@@ -20,11 +20,33 @@ pnpm add @pandabase/node
 bun add @pandabase/node
 ```
 
-# Available resources and methods
+## Available resources and methods
 
-- `user`    
-    - `list()`
-    - `get(id)`
-    - `create({data})`
-    - `update({id, data})`
-    - `delete(id)`
+- `user`
+
+  - `get()`
+
+- `shop`
+
+  - `get(id)`
+
+- `customer`
+
+  - `list()`
+  - `get(id)`
+  - `create({data})`
+  - `update({id, data})`
+  - `delete(id)`
+
+- `product`
+
+  - `list()`
+  - `get(id)`
+  - `create({data})`
+  - `update({id, data})`
+  - `delete(id)`
+
+- `transaction`
+
+  - `get(id)`
+  - `create({data})`
