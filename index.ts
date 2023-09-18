@@ -133,7 +133,7 @@ class Pandabase extends Client {
 
   // @getUser - fetches information about current user
   private async getUser(): Promise<GetUserResponse> {
-    const endpoint: string = "/user";
+    const endpoint: string = "user";
     return this.makeRequest("GET", endpoint);
   }
 
@@ -141,13 +141,13 @@ class Pandabase extends Client {
 
   // @getCustomers - Fetches all customers
   private async getCustomers(): Promise<GetCustomersResponse> {
-    const endpoint: string = "/customers";
+    const endpoint: string = "customers";
     return this.makeRequest("GET", endpoint);
   }
 
   // @getCustomer - Fetches a customer using the id
   private async getCustomer(id: number): Promise<GetCustomerResponse> {
-    const endpoint: string = "/customer/" + id;
+    const endpoint: string = "customer/" + id;
     return this.makeRequest("GET", endpoint);
   }
 
@@ -155,7 +155,7 @@ class Pandabase extends Client {
   private async createCustomer(
     data: CreateCustomerRequest
   ): Promise<GetCustomerResponse> {
-    const endpoint: string = "/customer";
+    const endpoint: string = "customer";
     return this.makeRequest("POST", endpoint, data);
   }
 
@@ -163,13 +163,13 @@ class Pandabase extends Client {
   private async updateCustomer(
     data: UpdateCustomerRequest
   ): Promise<GetCustomerResponse> {
-    const endpoint: string = "/customer/" + data.id;
+    const endpoint: string = "customer/" + data.id;
     return this.makeRequest("PUT", endpoint, data);
   }
 
   // @deleteCustomer - Delete a customer
   private async deleteCustomer(id: number): Promise<GetCustomerResponse> {
-    const endpoint: string = "/customer/" + id;
+    const endpoint: string = "customer/" + id;
     return this.makeRequest("DELETE", endpoint);
   }
 
@@ -177,7 +177,7 @@ class Pandabase extends Client {
 
   // @getShop - Get the shop
   private async getShop(): Promise<GetShopResponse> {
-    const endpoint: string = "/shop";
+    const endpoint: string = "shop";
     return this.makeRequest("GET", endpoint);
   }
 
@@ -185,13 +185,13 @@ class Pandabase extends Client {
 
   // @getProducts - Get all products
   private async getProducts(): Promise<GetProductResponse> {
-    const endpoint: string = "/products";
+    const endpoint: string = "products";
     return this.makeRequest("GET", endpoint);
   }
 
   // @getProduct - Get a product with its id
   private async getProduct(id: number): Promise<GetProductResponse> {
-    const endpoint: string = "/product/" + id;
+    const endpoint: string = "product/" + id;
     return this.makeRequest("GET", endpoint);
   }
 
@@ -199,7 +199,7 @@ class Pandabase extends Client {
   private async createProduct(
     data: CreateProductRequest
   ): Promise<GetProductResponse> {
-    const endpoint: string = "/product";
+    const endpoint: string = "product";
     return this.makeRequest("POST", endpoint, data);
   }
 
@@ -207,13 +207,13 @@ class Pandabase extends Client {
   private async updateProduct(
     data: UpdateProductRequest
   ): Promise<GetProductResponse> {
-    const endpoint: string = "/product/" + data.id;
+    const endpoint: string = "product/" + data.id;
     return this.makeRequest("PUT", endpoint, data);
   }
 
   // @deleteProduct - Delete a product
   private async deleteProduct(id: number): Promise<GetProductResponse> {
-    const endpoint: string = "/product/" + id;
+    const endpoint: string = "product/" + id;
     return this.makeRequest("DELETE", endpoint);
   }
 
@@ -223,12 +223,12 @@ class Pandabase extends Client {
   private async createTransaction(
     data: CreateTransactionRequest
   ): Promise<GetCreatedTransactionResponse> {
-    const endpoint: string = "/transaction";
+    const endpoint: string = "transaction";
     return this.makeRequest("POST", endpoint, data);
   }
 
   private async getTransaction(id: number): Promise<GetTransactionResponse> {
-    const endpoint: string = "/transaction/" + id;
+    const endpoint: string = "transaction/" + id;
     return this.makeRequest("GET", endpoint);
   }
 }
