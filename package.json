@@ -2,7 +2,6 @@
   "name": "@pandabase/node",
   "module": "Node.js library for the Pandabase API.",
   "version": "0.1.0",
-  "type": "module",
   "private": false,
   "license": "MIT",
   "main": "dist/index.js",
