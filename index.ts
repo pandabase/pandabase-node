@@ -1,27 +1,63 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosInstance } from "axios";
+import { createShopClient } from "./client/shopClient";
+import { PANDABASE_BASE_URL } from "./constants";
+import {
+  ShopClient,
+  HttpMethodType,
+  BaseErrorType,
+  PayoutsMethods,
+  PandabaseOptions,
+} from "./types";
 
-import { GetUserResponse } from "user-interfaces";
-import { GetShopResponse, GetShopsResponse } from "shop-interfaces";
-import { GetProductsResponse } from "product-interfaces";
-
-class Client {
+export default class Pandabase {
   private secret: string;
+  private idempotencyKey?: string;
+  private axiosInstance: AxiosInstance;
 
-  constructor(secret: string) {
+  public payouts: PayoutsMethods;
+
+  constructor(secret: string, options?: PandabaseOptions) {
     this.secret = secret;
+    this.idempotencyKey = options?.idempotency_enabled
+      ? this.generateUUID()
+      : undefined;
+
+    this.axiosInstance = axios.create({
+      baseURL: options?.base_url || PANDABASE_BASE_URL,
+      headers: {
+        Authorization: `Bearer ${this.secret}`,
+      },
+    });
+
+    this.payouts = {
+      list: this.listPayouts.bind(this),
+      retrive: this.retrivePayout.bind(this),
+      create: this.createPayout.bind(this),
+    };
+  }
+
+  private generateUUID(): string {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0,
+          v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
   }
 
   protected async makeRequest<T>(
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    method: HttpMethodType,
     path: string,
     data?: Record<string, any>
   ): Promise<T> {
     try {
-      const url = `https://api.pandabase.io/${path}`;
+      const url = `${path}`;
       const headers = {
-        Authorization: `Bearer ${this.secret}`,
+        ...(this.idempotencyKey && { "Idempotency-Key": this.idempotencyKey }),
       };
-      const response: AxiosResponse<T> = await axios({
+      const response: AxiosResponse<T> = await this.axiosInstance({
         method,
         url,
         data,
@@ -30,82 +66,38 @@ class Client {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const APIError: Base = {
+        const APIError = {
           statusCode: error.response?.status || 500,
           message: error.response?.data?.message || error.message,
         };
-        throw APIError;
+
+        throw APIError as BaseErrorType;
       } else {
         throw error;
       }
     }
   }
-}
 
-class Pandabase extends Client {
-  constructor(secret: string) {
-    super(secret);
-
-    this.user = {
-      get: this.getUser.bind(this),
-    };
-
-    this.shop = {
-      list: this.getShops.bind(this),
-      get: this.getShop.bind(this),
-    };
-
-    this.product = {
-      list: this.getProducts.bind(this),
-      get: this.getProduct.bind(this),
-    };
+  private async listPayouts(): Promise<any> {
+    return await this.makeRequest<any>("GET", "/payouts");
   }
 
-  user: {
-    get: () => Promise<GetUserResponse>;
-  };
-
-  shop: {
-    list: () => Promise<GetShopsResponse>;
-    get: (id: string) => Promise<GetShopResponse>;
-  };
-
-  product: {
-    list: (shop_id: string) => Promise<GetProductsResponse>;
-    get: (shop_id: string, id: string) => Promise<GetProductsResponse>;
-  };
-
-  // @getUser - fetches information about current user
-  private async getUser(): Promise<GetUserResponse> {
-    const endpoint: string = "user";
-    return this.makeRequest("GET", endpoint);
+  private async createPayout(
+    id: string,
+    amount: number,
+    method_id: string
+  ): Promise<any> {
+    return await this.makeRequest<any>("POST", `/payouts/${id}`, {
+      method_id,
+      amount,
+    });
   }
 
-  // @getShop - Get the shop
-  private async getShops(): Promise<any> {
-    const endpoint: string = "shop";
-    return this.makeRequest("GET", endpoint);
+  private async retrivePayout(id: string): Promise<any> {
+    return await this.makeRequest<any>("GET", `/payouts/${id}`);
   }
 
-  private async getShop(id: string): Promise<GetShopResponse> {
-    const endpoint: string = "shop/" + id;
-    return this.makeRequest("GET", endpoint);
-  }
-
-  // @getProducts - Get all products
-  private async getProducts(shop_id: string): Promise<GetProductsResponse> {
-    const endpoint: string = "shop/" + shop_id + "/products";
-    return this.makeRequest("GET", endpoint);
-  }
-
-  // @getProduct - Get a product with its id
-  private async getProduct(
-    shop_id: string,
-    id: string
-  ): Promise<GetProductsResponse> {
-    const endpoint: string = "shop/" + shop_id + "/products/" + id;
-    return this.makeRequest("GET", endpoint);
+  public newShopClient(shopId: string, publishableKey: string): ShopClient {
+    return createShopClient(this.axiosInstance, shopId, publishableKey);
   }
 }
-
-export { Pandabase };
