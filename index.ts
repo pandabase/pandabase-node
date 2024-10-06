@@ -1,103 +1,94 @@
-import axios, { AxiosResponse, AxiosInstance } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+} from "axios";
+
 import { createShopClient } from "./client/shopClient";
-import { PANDABASE_BASE_URL } from "./constants";
-import {
-  ShopClient,
-  HttpMethodType,
-  BaseErrorType,
-  PayoutsMethods,
-  PandabaseOptions,
-} from "./types";
+import { BASE_URL } from "./constants";
+import { PandabaseOptions } from "./types/global";
+
+export class PandabaseException extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "PandabaseException";
+    Object.setPrototypeOf(this, PandabaseException.prototype);
+  }
+}
 
 export default class Pandabase {
-  private secret: string;
-  private idempotencyKey?: string;
-  private axiosInstance: AxiosInstance;
-
-  public payouts: PayoutsMethods;
+  private readonly secret: string;
+  private readonly axiosInstance: AxiosInstance;
+  private readonly idempotencyEnabled: boolean;
+  private readonly maxRetries: number;
 
   constructor(secret: string, options?: PandabaseOptions) {
     this.secret = secret;
-    this.idempotencyKey = options?.idempotency_enabled
-      ? this.generateUUID()
-      : undefined;
+    this.idempotencyEnabled = options?.idempotency_enabled ?? true;
+    this.maxRetries = options?.max_retries ?? 3;
 
     this.axiosInstance = axios.create({
-      baseURL: options?.base_url || PANDABASE_BASE_URL,
+      baseURL: options?.base_url || BASE_URL,
       headers: {
         Authorization: `Bearer ${this.secret}`,
       },
     });
 
-    this.payouts = {
-      list: this.listPayouts.bind(this),
-      retrive: this.retrivePayout.bind(this),
-      create: this.createPayout.bind(this),
-    };
-  }
-
-  private generateUUID(): string {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0,
-          v = c === "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
+    this.axiosInstance.interceptors.request.use(
+      this.requestInterceptor.bind(this)
+    );
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      this.responseErrorInterceptor.bind(this)
     );
   }
 
-  protected async makeRequest<T>(
-    method: HttpMethodType,
-    path: string,
-    data?: Record<string, any>
-  ): Promise<T> {
-    try {
-      const url = `${path}`;
-      const headers = {
-        ...(this.idempotencyKey && { "Idempotency-Key": this.idempotencyKey }),
-      };
-      const response: AxiosResponse<T> = await this.axiosInstance({
-        method,
-        url,
-        data,
-        headers,
-      });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const APIError = {
-          statusCode: error.response?.status || 500,
-          message: error.response?.data?.message || error.message,
-        };
+  private requestInterceptor(config: InternalAxiosRequestConfig) {
+    const method = config.method?.toUpperCase() ?? "";
 
-        throw APIError as BaseErrorType;
-      } else {
-        throw error;
+    if (["POST", "PATCH", "PUT"].includes(method)) {
+      config.headers = config.headers || {};
+      config.headers["Content-Type"] = "application/json";
+
+      if (this.idempotencyEnabled && !config.headers["Idempotency-Key"]) {
+        config.headers["Idempotency-Key"] = crypto.randomUUID();
       }
     }
+
+    return config;
   }
 
-  private async listPayouts(): Promise<any> {
-    return await this.makeRequest<any>("GET", "/payouts");
+  private async responseErrorInterceptor(error: AxiosError) {
+    if (!error.response) {
+      return Promise.reject(
+        new PandabaseException("A network error has occurred.")
+      );
+    }
+
+    const { status, headers } = error.response;
+    const config = error.config as InternalAxiosRequestConfig & {
+      _retry?: number;
+    };
+
+    if (status === 429 && (config._retry ?? 0) < this.maxRetries) {
+      config._retry = (config._retry ?? 0) + 1;
+
+      const retryAfter = parseInt(headers["retry-after"] as string, 10) || 1;
+      const jitter = Math.random() * 1000;
+      const delay = Math.pow(2, config._retry) * 1000 + jitter;
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.max(retryAfter * 1000, delay))
+      );
+
+      return this.axiosInstance(config);
+    }
+
+    const { message } = error.response.data as any;
+    return Promise.reject(new PandabaseException(message));
   }
 
-  private async createPayout(
-    id: string,
-    amount: number,
-    method_id: string
-  ): Promise<any> {
-    return await this.makeRequest<any>("POST", `/payouts/${id}`, {
-      method_id,
-      amount,
-    });
-  }
-
-  private async retrivePayout(id: string): Promise<any> {
-    return await this.makeRequest<any>("GET", `/payouts/${id}`);
-  }
-
-  public newShopClient(shopId: string, publishableKey: string): ShopClient {
-    return createShopClient(this.axiosInstance, shopId, publishableKey);
+  public shops(shopId: string) {
+    return createShopClient(this.axiosInstance, shopId);
   }
 }

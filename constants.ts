@@ -1,3 +1,1 @@
-const PANDABASE_BASE_URL: string = "api.pandabase.io";
-
-export { PANDABASE_BASE_URL };
+export const BASE_URL: string = "http://localhost:5000";
