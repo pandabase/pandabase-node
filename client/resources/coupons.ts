@@ -1,28 +1,43 @@
 import { AxiosInstance } from "axios";
 
-import { Coupon, CouponListResponse, CreateCoupon } from "../../types/global";
+import { ApiResponse } from "../../types/common";
+
+import {
+  CreateCouponRequestBody,
+  CreateCouponResponse,
+  DeleteCouponResponse,
+  ListCouponResponse,
+  RetrieveCouponResponse,
+  UpdateCouponRequestBody,
+  UpdateCouponResponse,
+} from "../../types/resources/coupon";
 
 export function couponOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/coupons`;
 
   return {
-    list: async (): Promise<CouponListResponse> => {
-      const response = await api.get<{ payload: CouponListResponse }>(baseUrl);
+    list: async () => {
+      const response = await api.get<ApiResponse<ListCouponResponse>>(baseUrl);
 
       return response.data.payload;
     },
     retrieve: async (id: string) => {
-      const response = await api.get<{ payload: Coupon }>(`${baseUrl}/${id}`);
+      const response = await api.get<ApiResponse<RetrieveCouponResponse>>(
+        `${baseUrl}/${id}`
+      );
 
       return response.data.payload;
     },
-    create: async (data: CreateCoupon) => {
-      const response = await api.post<{ payload: Coupon }>(baseUrl, data);
+    create: async (body: CreateCouponRequestBody) => {
+      const response = await api.post<ApiResponse<CreateCouponResponse>>(
+        baseUrl,
+        body
+      );
 
       return response.data.payload;
     },
-    update: async (id: string, data: Partial<CreateCoupon>) => {
-      const response = await api.put<{ payload: Coupon }>(
+    update: async (id: string, data: UpdateCouponRequestBody) => {
+      const response = await api.put<ApiResponse<UpdateCouponResponse>>(
         `${baseUrl}/${id}`,
         data
       );
@@ -30,7 +45,7 @@ export function couponOperations(api: AxiosInstance, shopId: string) {
       return response.data.payload;
     },
     delete: async (id: string) => {
-      const response = await api.delete<{ payload: Coupon }>(
+      const response = await api.delete<ApiResponse<DeleteCouponResponse>>(
         `${baseUrl}/${id}`
       );
 

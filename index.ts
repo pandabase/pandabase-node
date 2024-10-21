@@ -5,8 +5,8 @@ import axios, {
 } from "axios";
 
 import { createShopClient } from "./client/shopClient";
-import { BASE_URL } from "./constants";
-import { PandabaseOptions } from "./types/global";
+import { PRODUCTION_BASE_URL } from "./constants";
+import { ApiErrorResponse, PandabaseOptions } from "./types/common";
 
 export class PandabaseException extends Error {
   constructor(message: string) {
@@ -28,7 +28,7 @@ export default class Pandabase {
     this.maxRetries = options?.max_retries ?? 3;
 
     this.axiosInstance = axios.create({
-      baseURL: options?.base_url || BASE_URL,
+      baseURL: options?.base_url || PRODUCTION_BASE_URL,
       headers: {
         Authorization: `Bearer ${this.secret}`,
       },
@@ -84,7 +84,7 @@ export default class Pandabase {
       return this.axiosInstance(config);
     }
 
-    const { message } = error.response.data as any;
+    const { message } = error.response.data as ApiErrorResponse;
     return Promise.reject(new PandabaseException(message));
   }
 
