@@ -7,22 +7,25 @@ import {
 } from "../types/resources/shop";
 
 import { ApiResponse } from "../types/common";
+
 import { couponOperations } from "./resources/coupons";
+import { productOperations } from "./resources/products";
 
 export function createShopClient(api: AxiosInstance, shopId: string) {
   return {
+    products: productOperations(api, shopId),
     coupons: couponOperations(api, shopId),
     retrieve: async () => {
-      const shop = await api.get<ApiResponse<RetrieveShopResponse>>(
+      const shopResponse = await api.get<ApiResponse<RetrieveShopResponse>>(
         `/shops/${shopId}`
       );
-      const flags = await api.get<ApiResponse<RetrieveFlagsResponse>>(
-        `/shops/${shopId}/flags`
-      );
+      const shopFlagsResponse = await api.get<
+        ApiResponse<RetrieveFlagsResponse>
+      >(`/shops/${shopId}/flags`);
 
       return {
-        ...shop.data.payload,
-        flags: flags.data.payload,
+        ...shopResponse.data.payload.shop,
+        flags: shopFlagsResponse.data.payload.flags,
       };
     },
     list: async () => {

@@ -32,8 +32,10 @@ export type ShopData = {
   description: string;
   category: string;
   statement_descriptor: string | null;
+  links: string[];
+  banners: string[];
   customer_support_email: string | null;
-  plan: string;
+  plan: ShopPlanType;
   type: string;
   handle: string;
   balance: number;
@@ -42,19 +44,14 @@ export type ShopData = {
   terms: string | null;
   privacy_policy: string | null;
   refund_policy: string | null;
-  links: string[];
-  banners: string[];
 };
 
-export type RetrieveShopResponse = ShopData;
+export type RetrieveShopResponse = { shop: ShopData };
 
 export type ListShopResponse = {
-  shops: Pick<
-    ShopData,
-    "id" | "title" | "description" | "icon" | "plan" | "balance"
-  > & {
+  shops: (Pick<ShopData, "id" | "title" | "description" | "icon"> & {
     owner: boolean;
-  };
+  })[];
 };
 
-export type RetrieveFlagsResponse = StoreFlagData;
+export type RetrieveFlagsResponse = { flags: StoreFlagData };

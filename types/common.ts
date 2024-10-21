@@ -1,7 +1,7 @@
 export interface PandabaseOptions {
   idempotency_enabled?: boolean | true;
-  base_url?: string;
-  max_retries: number;
+  max_retries?: number;
+  sandbox?: boolean;
 }
 
 export interface ApiResponse<T> {
@@ -31,4 +31,9 @@ export type PaginatedResponse<K extends string, T> = {
   [key in K]: T;
 } & {
   meta: PaginationMeta;
+};
+
+export type PaginationQuerystring = {
+  page_size: number;
+  page: number;
 };

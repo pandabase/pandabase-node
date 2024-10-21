@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 
 import { createShopClient } from "./client/shopClient";
-import { PRODUCTION_BASE_URL } from "./constants";
+import { PRODUCTION_BASE_URL, SANDBOX_BASE_URL } from "./constants";
 import { ApiErrorResponse, PandabaseOptions } from "./types/common";
 
 export class PandabaseException extends Error {
@@ -28,7 +28,7 @@ export default class Pandabase {
     this.maxRetries = options?.max_retries ?? 3;
 
     this.axiosInstance = axios.create({
-      baseURL: options?.base_url || PRODUCTION_BASE_URL,
+      baseURL: options?.sandbox ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL,
       headers: {
         Authorization: `Bearer ${this.secret}`,
       },

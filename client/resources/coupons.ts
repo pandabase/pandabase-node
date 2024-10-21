@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../../types/common";
 
 import {
   CreateCouponRequestBody,
@@ -12,15 +12,22 @@ import {
   UpdateCouponResponse,
 } from "../../types/resources/coupon";
 
+import { formatUrlParams } from "../utils/formatURLParam";
+
 export function couponOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/coupons`;
 
   return {
-    list: async () => {
-      const response = await api.get<ApiResponse<ListCouponResponse>>(baseUrl);
+    list: async (querystring?: PaginationQuerystring) => {
+      const url = formatUrlParams(baseUrl, {
+        page: querystring?.page,
+        page_size: querystring?.page_size,
+      });
 
+      const response = await api.get<ApiResponse<ListCouponResponse>>(url);
       return response.data.payload;
     },
+
     retrieve: async (id: string) => {
       const response = await api.get<ApiResponse<RetrieveCouponResponse>>(
         `${baseUrl}/${id}`
