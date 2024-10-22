@@ -1,9 +1,11 @@
-import { PaginatedResponse } from "../common";
+import { PaginatedResponse } from "./common";
 
-// UNION TYPES
-type CouponType = "PERCENTAGE" | "FIXED";
+// @type Unions
 
-// BASE
+export type CouponType = "PERCENTAGE" | "FIXED";
+
+// @type Base Type
+
 export interface BaseCouponData {
   id: string;
   name: string;
@@ -15,22 +17,19 @@ export interface BaseCouponData {
   enabled: boolean;
   times_used: number;
   created_at: string;
+  updated_at: string;
 }
 
-// REQUEST
+// @type Requests
 
-export interface CreateCouponRequestBody {
-  name: string;
-  type: CouponType;
-  code: string;
-  value: number;
-  limit: number;
+export interface CreateCouponRequestBody
+  extends Pick<BaseCouponData, "name" | "type" | "code" | "value" | "limit"> {
   limited: boolean;
 }
 
 export type UpdateCouponRequestBody = Partial<CreateCouponRequestBody>;
 
-// RESPONSE
+// @type Responses
 
 export type ListCouponResponse = PaginatedResponse<"coupons", BaseCouponData[]>;
 

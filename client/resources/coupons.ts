@@ -10,9 +10,9 @@ import {
   RetrieveCouponResponse,
   UpdateCouponRequestBody,
   UpdateCouponResponse,
-} from "../../types/resources/coupon";
+} from "../../types/coupons";
 
-import { formatUrlParams } from "../utils/formatURLParam";
+import { formatUrlParams } from "../../utils/formatURLParam";
 
 export function couponOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/coupons`;

@@ -1,9 +1,10 @@
-import { PaginatedResponse } from "../common";
+import { PaginatedResponse } from "./common";
 
-import { BaseFile } from "./file";
+import { BaseFileData } from "./files";
 
-// Union Types
-type ProductType =
+// @type Union Types
+
+export type ProductType =
   | "SERIAL"
   | "ONE_TIME"
   | "LICENSE"
@@ -11,11 +12,11 @@ type ProductType =
   | "DOWNLOADABLE"
   | "SUBSCRIPTION";
 
-type ProductCurrency = "USD" | "EUR" | "GBP";
+export type ProductCurrency = "USD" | "EUR" | "GBP";
 
-// Base
+// @type Base Type
 
-type BaseProductData = {
+export type BaseProductData = {
   id: string;
   title: string;
   subtitle: string;
@@ -28,12 +29,10 @@ type BaseProductData = {
   is_archived: boolean;
   created_at: string;
   updated_at: string;
-  images: BaseFile[];
+  images: BaseFileData[];
 };
 
-// EXTENDED
-
-type ExtendedProductData = BaseProductData &
+export type ExtendedBaseProductData = BaseProductData &
   (
     | { type: "SERIAL"; serial_count: number }
     | { type: Exclude<ProductType, "SERIAL"> }
@@ -80,20 +79,20 @@ export interface CreateProductVariantsRequest {}
 
 export interface UpdateProductVariantsRequest {}
 
-// Response
+// @type Responses
 
 export type ListProductResponse = PaginatedResponse<
   "products",
-  ExtendedProductData[]
+  ExtendedBaseProductData[]
 >;
 
 export type RetrieveProductResponse = {
-  product: BaseProductData;
+  product: BaseProductData; // TODO: The categories type needs to be modified here
 };
 
-export type CreateProductResponse = { product: ExtendedProductData };
+export type CreateProductResponse = { product: ExtendedBaseProductData };
 
-export type UpdateProductResponse = { product: ExtendedProductData };
+export type UpdateProductResponse = { product: ExtendedBaseProductData };
 
 export type DeleteProductResponse = { product: { id: string } };
 

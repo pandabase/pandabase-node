@@ -4,7 +4,7 @@ import {
   ListShopResponse,
   RetrieveFlagsResponse,
   RetrieveShopResponse,
-} from "../types/resources/shop";
+} from "../types/shops";
 
 import { ApiResponse } from "../types/common";
 

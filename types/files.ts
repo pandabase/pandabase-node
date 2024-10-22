@@ -1,4 +1,6 @@
-export type BaseFile = {
+// @type Base Type
+
+export type BaseFileData = {
   id: string;
   path: string;
   preview_url: string;

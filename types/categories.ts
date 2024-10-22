@@ -1,8 +1,8 @@
-import { PaginatedResponse } from "../common";
+import { PaginatedResponse } from "./common";
 
-// BASE
+// @type Base Type
 
-type BaseCategoryData = {
+export type BaseCategoryData = {
   id: string;
   name: string;
   handle: string;
@@ -10,7 +10,7 @@ type BaseCategoryData = {
   updated_at: string;
 };
 
-// REQUEST
+// @type Requests
 
 export interface CreateCategoryRequestBody {
   name: string;
@@ -21,7 +21,7 @@ export interface CreateCategoryRequestBody {
 export interface UpdateCategoryRequestBody
   extends Partial<CreateCategoryRequestBody> {}
 
-// RESPONSES
+// @type Responses
 
 export type ListCategoryResponse = PaginatedResponse<
   "categories",

@@ -5,7 +5,6 @@ import axios, {
 } from "axios";
 
 import { createShopClient } from "./client/shopClient";
-import { PRODUCTION_BASE_URL, SANDBOX_BASE_URL } from "./constants";
 import { ApiErrorResponse, PandabaseOptions } from "./types/common";
 
 export class PandabaseException extends Error {
@@ -15,6 +14,9 @@ export class PandabaseException extends Error {
     Object.setPrototypeOf(this, PandabaseException.prototype);
   }
 }
+
+const PRODUCTION_BASE_URL: string = "https://api.pandabase.io";
+const SANDBOX_BASE_URL: string = "https://api.sandbox.pandabase.io";
 
 export default class Pandabase {
   private readonly secret: string;

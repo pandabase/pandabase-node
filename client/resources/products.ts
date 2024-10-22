@@ -10,9 +10,9 @@ import {
   RetrieveProductResponse,
   UpdateProductRequestBody,
   UpdateProductResponse,
-} from "../../types/resources/product";
+} from "../../types/products";
 
-import { formatUrlParams } from "../utils/formatURLParam";
+import { formatUrlParams } from "../../utils/formatURLParam";
 
 export function productOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/products`;
