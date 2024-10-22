@@ -17,6 +17,13 @@ async function main() {
     handle: "steam-giftcard-5",
   }); // a special created.product.serial_count property is also availble if product type is a serial
 
+  // create a category
+  await shopClient.categories.create({
+    name: "Giftcards",
+    handle: "gift-card",
+    products: [created.product.id],
+  });
+
   await shopClient.products.retrieveByHandle(created.product.handle);
 
   // Get product by id

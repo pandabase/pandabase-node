@@ -8,6 +8,7 @@ import {
 
 import { ApiResponse } from "../types/common";
 
+import { categoryOperations } from "./resources/categories";
 import { couponOperations } from "./resources/coupons";
 import { productOperations } from "./resources/products";
 
@@ -15,6 +16,7 @@ export function createShopClient(api: AxiosInstance, shopId: string) {
   return {
     products: productOperations(api, shopId),
     coupons: couponOperations(api, shopId),
+    categories: categoryOperations(api, shopId),
     retrieve: async () => {
       const shopResponse = await api.get<ApiResponse<RetrieveShopResponse>>(
         `/shops/${shopId}`

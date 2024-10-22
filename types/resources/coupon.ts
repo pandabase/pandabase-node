@@ -1,10 +1,9 @@
-import { PaginatedResponse, PaginationMeta } from "../common";
+import { PaginatedResponse } from "../common";
 
 // UNION TYPES
 type CouponType = "PERCENTAGE" | "FIXED";
 
 // BASE
-
 export interface BaseCouponData {
   id: string;
   name: string;
