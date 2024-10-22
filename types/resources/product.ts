@@ -1,4 +1,6 @@
-import { PaginatedResponse, PaginationMeta } from "../common";
+import { PaginatedResponse } from "../common";
+
+import { BaseFile } from "./file";
 
 // Union Types
 type ProductType =
@@ -8,6 +10,8 @@ type ProductType =
   | "SERVICE"
   | "DOWNLOADABLE"
   | "SUBSCRIPTION";
+
+type ProductCurrency = "USD" | "EUR" | "GBP";
 
 // Base
 
@@ -24,10 +28,10 @@ type BaseProductData = {
   is_archived: boolean;
   created_at: string;
   updated_at: string;
-  images: string[];
+  images: BaseFile[];
 };
 
-// Extended
+// EXTENDED
 
 type ExtendedProductData = BaseProductData &
   (
@@ -35,11 +39,26 @@ type ExtendedProductData = BaseProductData &
     | { type: Exclude<ProductType, "SERIAL"> }
   );
 
-// Request
+// REQUEST
 
-export interface CreateProductRequestBody {}
+export interface CreateProductRequestBody {
+  title: string;
+  subtitle: string;
+  description: string;
+  handle: string;
+  price: number;
+  currency: ProductCurrency;
+  type: ProductType;
+  in_stock?: boolean;
+  is_draft?: boolean;
+  is_archived?: boolean;
+  categories?: string[];
+}
 
-export interface UpdateProductRequestBody {}
+export interface UpdateProductRequestBody
+  extends Partial<CreateProductRequestBody> {
+  images?: string[];
+}
 
 export interface CreateProductSerialKeysRequest {}
 
@@ -71,14 +90,11 @@ export type ListProductResponse = PaginatedResponse<
 export type RetrieveProductResponse = {
   product: BaseProductData;
 };
+export type CreateProductResponse = { product: ExtendedProductData };
 
-export type RetrieveProductByHandleResponse = {};
+export type UpdateProductResponse = { product: ExtendedProductData };
 
-export type CreateProductResponse = {};
-
-export type UpdateProductResponse = {};
-
-export type DeleteProductResponse = {};
+export type DeleteProductResponse = { product: { id: string } };
 
 export type RetrieveProductSerialKeysResponse = {};
 
