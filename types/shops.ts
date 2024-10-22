@@ -51,7 +51,6 @@ export type BaseShopFlagData = {
   payment_methods: PaymentMethod[];
   storefront_enabled: boolean;
   custom_domain: boolean;
-  stripe_connect: boolean;
   is_verified: boolean;
   is_blocked: boolean;
   is_under_review: boolean;
