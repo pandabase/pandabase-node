@@ -43,10 +43,10 @@ export function couponOperations(api: AxiosInstance, shopId: string) {
 
       return response.data.payload;
     },
-    update: async (id: string, data: UpdateCouponRequestBody) => {
+    update: async (id: string, body: UpdateCouponRequestBody) => {
       const response = await api.put<ApiResponse<UpdateCouponResponse>>(
         `${baseUrl}/${id}`,
-        data
+        body
       );
 
       return response.data.payload;

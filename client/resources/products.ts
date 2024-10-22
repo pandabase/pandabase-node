@@ -34,9 +34,9 @@ export function productOperations(api: AxiosInstance, shopId: string) {
 
       return response.data.payload;
     },
-    retrieveByHandle: async (slug: string) => {
+    retrieveByHandle: async (handle: string) => {
       const response = await api.get<ApiResponse<RetrieveProductResponse>>(
-        baseUrl + "/slug/" + slug
+        baseUrl + "/slug/" + handle
       );
 
       return response.data.payload;

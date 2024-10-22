@@ -90,6 +90,7 @@ export type ListProductResponse = PaginatedResponse<
 export type RetrieveProductResponse = {
   product: BaseProductData;
 };
+
 export type CreateProductResponse = { product: ExtendedProductData };
 
 export type UpdateProductResponse = { product: ExtendedProductData };
