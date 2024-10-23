@@ -18,8 +18,8 @@ export interface UpdateBlacklistRequestBody {}
 
 // @type Responses
 
-export type ListCategoryResponse = { blacklist: BaseBlacklistData[] };
-export type RetrieveCategoryResponse = { blacklist: BaseBlacklistData };
-export type CreateCategoryResponse = { blacklist: BaseBlacklistData };
-export type UpdateCategoryResponse = { blacklist: BaseBlacklistData };
-export type DeleteCategoryResponse = { blacklist: BaseBlacklistData };
+export type ListBlacklistResponse = { blacklist: BaseBlacklistData[] };
+export type RetrieveBlacklistResponse = { blacklist: BaseBlacklistData };
+export type CreateBlacklistResponse = { blacklist: BaseBlacklistData };
+export type UpdateBlacklistResponse = { blacklist: BaseBlacklistData };
+export type DeleteBlacklistResponse = { blacklist: BaseBlacklistData };

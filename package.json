@@ -6,10 +6,18 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://docs.pandabase.io/developers/sdks/typescript",
   "repository": {
     "type": "git",
     "url": "https://github.com/pandabase/pandabase-node.git"
   },
+  "keywords": [
+    "pandabase",
+    "pandabase-sdk",
+    "pandabase-node",
+    "pandabase",
+    "pandabase-typescript"
+  ],
   "scripts": {
     "build": "tsc"
   },
