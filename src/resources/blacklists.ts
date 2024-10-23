@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse, PaginationQuerystring } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../types/common";
 
 import {
   CreateBlacklistRequestBody,
@@ -10,9 +10,9 @@ import {
   RetrieveBlacklistResponse,
   UpdateBlacklistRequestBody,
   UpdateBlacklistResponse,
-} from "../../types/blacklists";
+} from "../types/blacklists";
 
-import { formatUrlParams } from "../../utils/formatURLParam";
+import { formatUrlParams } from "../utils/formatURLParam";
 
 export function blacklistOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/blacklists`;

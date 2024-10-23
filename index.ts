@@ -4,8 +4,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-import { createShopClient } from "./client/shopClient";
-import { ApiErrorResponse, PandabaseOptions } from "./types/common";
+import { createShopClient } from "./src/shopClient";
+import { ApiErrorResponse, PandabaseOptions } from "./src/types/common";
 
 export class PandabaseException extends Error {
   constructor(message: string) {

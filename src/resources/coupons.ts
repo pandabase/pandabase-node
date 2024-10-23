@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse, PaginationQuerystring } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../types/common";
 
 import {
   CreateCouponRequestBody,
@@ -10,9 +10,9 @@ import {
   RetrieveCouponResponse,
   UpdateCouponRequestBody,
   UpdateCouponResponse,
-} from "../../types/coupons";
+} from "../types/coupons";
 
-import { formatUrlParams } from "../../utils/formatURLParam";
+import { formatUrlParams } from "../utils/formatURLParam";
 
 export function couponOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/coupons`;

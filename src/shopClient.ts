@@ -4,9 +4,9 @@ import {
   ListShopResponse,
   RetrieveFlagsResponse,
   RetrieveShopResponse,
-} from "../types/shops";
+} from "./types/shops";
 
-import { ApiResponse } from "../types/common";
+import { ApiResponse } from "./types/common";
 
 import { blacklistOperations } from "./resources/blacklists";
 import { categoryOperations } from "./resources/categories";

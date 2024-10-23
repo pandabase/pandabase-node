@@ -1,3 +1,4 @@
+import { BaseCategoryData } from "./categories";
 import { PaginatedResponse } from "./common";
 
 import { BaseFileData } from "./files";
@@ -14,6 +15,8 @@ export type ProductType =
 
 export type ProductCurrency = "USD" | "EUR" | "GBP";
 
+export type BillingFrequency = "WEEKLY" | "MONTHLY" | "YEARLY";
+
 // @type Base Type
 
 export type BaseProductData = {
@@ -29,7 +32,6 @@ export type BaseProductData = {
   is_archived: boolean;
   created_at: string;
   updated_at: string;
-  images: BaseFileData[];
 };
 
 export type ExtendedBaseProductData = BaseProductData &
@@ -37,6 +39,18 @@ export type ExtendedBaseProductData = BaseProductData &
     | { type: "SERIAL"; serial_count: number }
     | { type: Exclude<ProductType, "SERIAL"> }
   );
+
+export type BaseProductMessageData = {
+  id: string;
+  title: string;
+  content: string;
+};
+
+export type BaseProductSerialData = {
+  id: string;
+  encrypted_value: string;
+  value: string;
+};
 
 // REQUEST
 
@@ -51,7 +65,6 @@ export interface CreateProductRequestBody {
   in_stock?: boolean;
   is_draft?: boolean;
   is_archived?: boolean;
-  categories?: string[];
 }
 
 export interface UpdateProductRequestBody
@@ -59,50 +72,75 @@ export interface UpdateProductRequestBody
   images?: string[];
 }
 
-export interface CreateProductSerialKeysRequest {}
+export interface UpdateProductSerialKeysRequest {
+  serials: string[];
+}
 
-export interface UpdateProductSerialKeysRequest {}
+export interface UpdateProductMessageRequest {
+  message: Pick<BaseProductMessageData, "title" | "content">;
+}
 
-export interface CreateProductMessageRequest {}
+export interface UpdateProductDownloadsRequest {
+  downloads: string[]; // keys of File[]
+}
 
-export interface UpdateProductMessageRequest {}
+export interface UpdateProductSubscriptionRequest {
+  subscription: {
+    trial_period_days: number;
+    setup_fee: number;
+    billing_frequency: BillingFrequency;
+    metered_billing: {
+      is_enabled: boolean;
+      unit_name: string;
+      unit_price: number;
+    };
+  };
+}
 
-export interface CreateProductDownloadsRequest {}
-
-export interface UpdateProductDownloadsRequest {}
-
-export interface CreateProductSubscriptionRequest {}
-
-export interface UpdateProductSubscriptionRequest {}
-
-export interface CreateProductVariantsRequest {}
-
+// unavailable in api level
 export interface UpdateProductVariantsRequest {}
 
 // @type Responses
 
 export type ListProductResponse = PaginatedResponse<
   "products",
-  ExtendedBaseProductData[]
+  (ExtendedBaseProductData & { images: BaseFileData[]; categories: string[] })[]
 >;
 
 export type RetrieveProductResponse = {
-  product: BaseProductData; // TODO: The categories type needs to be modified here
+  product: BaseProductData & {
+    images: BaseFileData[];
+    categories: Pick<BaseCategoryData, "id" | "handle" | "name">[];
+  };
 };
 
 export type CreateProductResponse = { product: ExtendedBaseProductData };
 
-export type UpdateProductResponse = { product: ExtendedBaseProductData };
+export type UpdateProductResponse = {
+  product: Pick<ExtendedBaseProductData, "id">;
+};
 
-export type DeleteProductResponse = { product: { id: string } };
+export type DeleteProductResponse = {
+  product: Pick<ExtendedBaseProductData, "id">;
+};
 
-export type RetrieveProductSerialKeysResponse = {};
+export type RetrieveProductSerialKeysResponse = {
+  product: {
+    serials: Pick<BaseProductSerialData, "id" | "value">[];
+  };
+};
 
-export type UpdateProductSerialKeysResponse = {};
+export type UpdateProductSerialKeysResponse = {
+  product: { serials: number };
+};
 
-export type RetrieveProductMessageResponse = {};
+export type RetrieveProductMessageResponse = {
+  product: { message: BaseProductMessageData };
+};
 
-export type UpdateProductMessageResponse = {};
+export type UpdateProductMessageResponse = {
+  product: { message: Pick<BaseProductMessageData, "id"> };
+};
 
 export type RetrieveProductDownloadsResponse = {};
 

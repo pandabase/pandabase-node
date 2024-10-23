@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse, PaginationQuerystring } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../types/common";
 
 import {
   CreateProductRequestBody,
@@ -10,9 +10,9 @@ import {
   RetrieveProductResponse,
   UpdateProductRequestBody,
   UpdateProductResponse,
-} from "../../types/products";
+} from "../types/products";
 
-import { formatUrlParams } from "../../utils/formatURLParam";
+import { formatUrlParams } from "../utils/formatURLParam";
 
 export function productOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/products`;

@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse, PaginationQuerystring } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../types/common";
 
 import {
   CreateCategoryRequestBody,
@@ -10,9 +10,9 @@ import {
   RetrieveCategoryResponse,
   UpdateCategoryRequestBody,
   UpdateCategoryResponse,
-} from "../../types/categories";
+} from "../types/categories";
 
-import { formatUrlParams } from "../../utils/formatURLParam";
+import { formatUrlParams } from "../utils/formatURLParam";
 
 export function categoryOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/categories`;

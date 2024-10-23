@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import { ApiResponse, PaginationQuerystring } from "../../types/common";
+import { ApiResponse, PaginationQuerystring } from "../types/common";
 
 import {
   CreateWebhookRequestBody,
@@ -10,9 +10,9 @@ import {
   RetrieveWebhookResponse,
   UpdateWebhookRequestBody,
   UpdateWebhookResponse,
-} from "../../types/webhooks";
+} from "../types/webhooks";
 
-import { formatUrlParams } from "../../utils/formatURLParam";
+import { formatUrlParams } from "../utils/formatURLParam";
 
 export function webhookOperations(api: AxiosInstance, shopId: string) {
   const baseUrl = `/shops/${shopId}/webhooks`;
