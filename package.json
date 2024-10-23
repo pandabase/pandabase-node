@@ -6,6 +6,10 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pandabase/pandabase-node.git"
+  },
   "scripts": {
     "build": "tsc"
   },
