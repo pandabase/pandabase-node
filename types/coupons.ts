@@ -31,9 +31,14 @@ export type UpdateCouponRequestBody = Partial<CreateCouponRequestBody>;
 
 // @type Responses
 
-export type ListCouponResponse = PaginatedResponse<"coupons", BaseCouponData[]>;
+export type ListCouponResponse = PaginatedResponse<
+  "coupons",
+  Omit<BaseCouponData, "created_at" | "updated_at">[]
+>;
 
-export type RetrieveCouponResponse = { coupon: BaseCouponData };
+export type RetrieveCouponResponse = {
+  coupon: Omit<BaseCouponData, "updated_at">[];
+};
 
 export type CreateCouponResponse = { coupon: Pick<BaseCouponData, "id"> };
 

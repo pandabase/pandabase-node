@@ -1,5 +1,7 @@
 // @type Base Type
 
+import { PaginatedResponse } from "./common";
+
 export type BaseBlacklistData = {
   id: string;
   name: string;
@@ -13,13 +15,35 @@ export type BaseBlacklistData = {
 
 // @type Requests
 
-export interface CreateBlacklistRequestBody {}
-export interface UpdateBlacklistRequestBody {}
+export interface CreateBlacklistRequestBody {
+  blacklist: Pick<BaseBlacklistData, "id">;
+}
+export interface UpdateBlacklistRequestBody {
+  blacklist: Pick<BaseBlacklistData, "id">;
+}
 
 // @type Responses
 
-export type ListBlacklistResponse = { blacklist: BaseBlacklistData[] };
-export type RetrieveBlacklistResponse = { blacklist: BaseBlacklistData };
-export type CreateBlacklistResponse = { blacklist: BaseBlacklistData };
-export type UpdateBlacklistResponse = { blacklist: BaseBlacklistData };
-export type DeleteBlacklistResponse = { blacklist: BaseBlacklistData };
+export type ListBlacklistResponse = PaginatedResponse<
+  "blacklists",
+  Pick<BaseBlacklistData, "id" | "asns" | "ips" | "ip_ranges" | "countries">[]
+>;
+
+export type RetrieveBlacklistResponse = {
+  blacklist: Pick<
+    BaseBlacklistData,
+    "id" | "asns" | "ips" | "ip_ranges" | "countries"
+  >;
+};
+
+export type CreateBlacklistResponse = {
+  blacklist: Pick<BaseBlacklistData, "id">;
+};
+
+export type UpdateBlacklistResponse = {
+  blacklist: Pick<BaseBlacklistData, "id">;
+};
+
+export type DeleteBlacklistResponse = {
+  blacklist: Pick<BaseBlacklistData, "id">;
+};
