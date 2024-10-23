@@ -11,13 +11,13 @@ The Pandabase Node library provides convenient access to the Pandabase API from 
 Install the package with:
 
 ```sh
-npm install @pandabase/node
+npm install pandabase
 # or
-yarn add @pandabase/node
+yarn add pandabase
 # or
-pnpm add @pandabase/node
+pnpm add pandabase
 # or
-bun add @pandabase/node
+bun add pandabase
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ bun add @pandabase/node
 For complete details on the library's methods and signatures, please refer to our documentation: [TypeScript SDK Documentation](https://docs.pandabase.io/developers/sdks/typescript).
 
 ```ts
-import Pandabase from "@pandabase/node";
+import Pandabase from "pandabase";
 
 const pandabase = new Pandabase(process.env.PANDABASE_SECRET_KEY);
 
