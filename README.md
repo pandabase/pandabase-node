@@ -25,7 +25,7 @@ bun add @pandabase/node
 For complete details on the library's methods and signatures, please refer to our documentation: [TypeScript SDK Documentation](https://docs.pandabase.io/developers/sdks/typescript).
 
 ```ts
-import Pandabase from "pandabase";
+import Pandabase from "@pandabase/node";
 
 const pandabase = new Pandabase(process.env.PANDABASE_SECRET_KEY);
 
