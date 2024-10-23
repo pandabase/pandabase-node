@@ -22,6 +22,8 @@ bun add @pandabase/node
 
 ## Usage
 
+For complete details on the library's methods and signatures, please refer to our documentation: [TypeScript SDK Documentation](https://docs.pandabase.io/developers/sdks/typescript).
+
 ```ts
 import Pandabase from "pandabase";
 
