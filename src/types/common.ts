@@ -1,6 +1,10 @@
 export interface PandabaseOptions {
   idempotency_enabled?: boolean | true;
-  max_retries?: number;
+  retries: {
+    max_retries?: number;
+    base_delay?: number;
+    max_delay?: number;
+  };
   sandbox?: boolean;
 }
 
@@ -36,4 +40,7 @@ export type PaginatedResponse<K extends string, T> = {
 export type PaginationQuerystring = {
   page_size: number;
   page: number;
+  filter?: string;
+  sort?: string;
+  search?: string;
 };
