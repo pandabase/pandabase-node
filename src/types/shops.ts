@@ -87,8 +87,6 @@ export type BaseShopData = {
   terms: string | null;
   privacy_policy: string | null;
   refund_policy: string | null;
-  statement_descriptor: string | null;
-  customer_support_email: string | null;
 };
 
 // @type Responses
