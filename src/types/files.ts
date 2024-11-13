@@ -7,3 +7,12 @@ export type BaseFileData = {
   hash: string;
   resolutions: number[];
 };
+
+export type DownloadableFile = {
+  id: string;
+  name: string;
+  size: string;
+  path: string;
+  hash: string;
+  created_at: string;
+};

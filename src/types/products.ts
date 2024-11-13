@@ -1,7 +1,7 @@
 import { BaseCategoryData } from "./categories";
 import { PaginatedResponse } from "./common";
 
-import { BaseFileData } from "./files";
+import { BaseFileData, DownloadableFile } from "./files";
 
 // @type Union Types
 
@@ -81,7 +81,7 @@ export interface UpdateProductMessageRequest {
 }
 
 export interface UpdateProductDownloadsRequest {
-  downloads: string[]; // keys of File[]
+  files: string[]; // keys of File[]
 }
 
 export interface UpdateProductSubscriptionRequest {
@@ -142,14 +142,18 @@ export type UpdateProductMessageResponse = {
   product: { message: Pick<BaseProductMessageData, "id"> };
 };
 
-export type RetrieveProductDownloadsResponse = {};
+export type RetrieveProductDownloadsResponse = {
+  product: { files: DownloadableFile[] };
+};
 
-export type UpdateProductDownloadsResponse = {};
+export type UpdateProductDownloadsResponse = {
+  product: { files: DownloadableFile[] };
+};
 
 export type RetrieveProductSubscriptionResponse = {};
 
 export type UpdateProductSubscriptionResponse = {};
 
-export type RetrieveProductVariantsResponse = {};
+// export type RetrieveProductVariantsResponse = {};
 
-export type UpdateProductVariantsResponse = {};
+// export type UpdateProductVariantsResponse = {};
