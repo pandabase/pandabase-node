@@ -15,7 +15,14 @@ export type ProductType =
 
 export type ProductCurrency = "USD" | "EUR" | "GBP";
 
-export type BillingFrequency = "WEEKLY" | "MONTHLY" | "YEARLY";
+export type BillingFrequency =
+  | "DAILY"
+  | "WEEKLY"
+  | "MONTHLY"
+  | "QUARTERLY"
+  | "YEARLY";
+
+export type ChargeTiming = "IMMEDIATE" | "PERIODIC";
 
 // @type Base Type
 
@@ -87,14 +94,14 @@ export interface UpdateProductDownloadsRequest {
 export interface UpdateProductSubscriptionRequest {
   subscription: {
     trial_period_days: number;
-    setup_fee: "DAILY" | "WEEKLY" | "MONTHLY" | "QUARTERLY" | "YEARLY";
+    setup_fee: number;
     billing_frequency: BillingFrequency;
     metered_billing: {
       is_enabled: boolean;
       unit_name: string;
       unit_price: number;
     };
-    charge_timing: "IMMEDIATE" | "PERIODIC";
+    charge_timing: ChargeTiming;
   };
 }
 
