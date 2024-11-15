@@ -87,13 +87,14 @@ export interface UpdateProductDownloadsRequest {
 export interface UpdateProductSubscriptionRequest {
   subscription: {
     trial_period_days: number;
-    setup_fee: number;
+    setup_fee: "DAILY" | "WEEKLY" | "MONTHLY" | "QUARTERLY" | "YEARLY";
     billing_frequency: BillingFrequency;
     metered_billing: {
       is_enabled: boolean;
       unit_name: string;
       unit_price: number;
     };
+    charge_timing: "IMMEDIATE" | "PERIODIC";
   };
 }
 
